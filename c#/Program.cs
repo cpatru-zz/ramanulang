@@ -65,6 +65,23 @@ namespace ConsoleApplication
       }
     }
 
+    public static IEnumerable<long> Ta(int n) 
+    {
+      var previousCubeSum = 2L; // 1^3 + 1^3
+      int matchesRequired = n-1;
+      foreach (var cubeSum in SumOfCubePairsSorted(1, 1).Skip(1)) 
+      {
+        matchesRequired = previousCubeSum == cubeSum
+                                          ? matchesRequired - 1
+                                          : n-1;
+        if (matchesRequired <= 0)
+        {
+          yield return cubeSum;
+        }
+        previousCubeSum = cubeSum;
+      }
+    }
+
     public static void Main(string[] args)
     {
       // NaturalNumbers().Skip(1).Take(5).Select(Cube).ToList().ForEach(Console.WriteLine);
@@ -78,6 +95,10 @@ namespace ConsoleApplication
                   .Select(x => x.A);
 
       Console.WriteLine("Ta(2) = [{0}, ...]", String.Join(", ", ta2.Take(20).Select(x => x.ToString())));
+
+      Console.WriteLine("Ta(2) = [{0}, ...]", String.Join(", ", Ta(2).Take(20).Select(x => x.ToString())));
+    
+      Console.WriteLine("Ta(3) = [{0}, ...]", String.Join(", ", Ta(3).Take(1).Select(x => x.ToString())));
     }
   }
 }
